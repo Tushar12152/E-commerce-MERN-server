@@ -7,9 +7,24 @@ app.use(morgan('dev'))
 
 
 
+const isLoggedin=(req,res,next)=>{
+
+    const login=false
+
+    if(login){
+        next()
+    }else{
+        return res.status(401).json({message:'invalid user'})
+    }
+
+}
 
 
-app.use('/products', (req,res)=>{
+app.get("/users", isLoggedin ,(req,res)=>{
+    res.send('user profile returned successfully')
+})
+
+app.get('/products', (req,res)=>{
     res.send('all products are here-----------')
 })
 
