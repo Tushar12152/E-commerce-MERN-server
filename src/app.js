@@ -4,6 +4,8 @@ const cors = require('cors');
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const createError = require('http-errors')
+const xssClean = require('xss-clean')
+const rateLimit = require('express-rate-limit')
 
 // const port = process.env.port || 5001
 
@@ -22,21 +24,29 @@ const isLoggedin = (req, res, next) => {
 
 }
 
+const rateLimiter= rateLimit({
+	windowMs: 1 * 60 * 1000, // 1 minutes
+	max: 5,
+    message:'Too many request from this IP. Please try again later...' 
+	
+})
+
 app.use(express.json())
 app.use(bodyParser.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cors())
 app.use(morgan('dev'))
+app.use(xssClean)
 // app.use(isLoggedin) for all apis
 
 
-app.get("/users", isLoggedin, (req, res) => {
+app.get("/users",  isLoggedin, (req, res) => {
     console.log(req.body.id)
 
     res.send('user profile returned successfully')
 })
 
-app.get('/products', (req, res) => {
+app.get('/products',rateLimiter, (req, res) => {
     res.send('all products are here-----------')
 })
 
