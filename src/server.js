@@ -1,7 +1,7 @@
 const app = require('./app');
-const port = process.env.port || 5001
+const {serverPort} = require('./secret');
 
 
-app.listen(port, () => {
-    console.log(`this server is going on port http://localhost:${port}`)
+app.listen(serverPort, () => {
+    console.log(`this server is going on port http://localhost:${serverPort}`)
 })

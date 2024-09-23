@@ -9,7 +9,6 @@ const rateLimit = require('express-rate-limit')
 
 // const port = process.env.port || 5001
 
-
 // middleWires
 const isLoggedin = (req, res, next) => {
 
@@ -36,13 +35,13 @@ app.use(bodyParser.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cors())
 app.use(morgan('dev'))
-app.use(xssClean)
+app.use(rateLimiter)
+// app.use(xssClean)
 // app.use(isLoggedin) for all apis
 
 
 app.get("/users",  isLoggedin, (req, res) => {
     console.log(req.body.id)
-
     res.send('user profile returned successfully')
 })
 
