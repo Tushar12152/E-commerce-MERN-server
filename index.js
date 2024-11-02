@@ -32,8 +32,14 @@ const usersCollections = client.db("e-commerce-DB").collection("user");
 
 app.post('/users', async (req,res)=>{
       const user= req.body;
-      console.log(user)    
-   
+      // console.log(user)    
+      const result= await usersCollections.insertOne(user)
+      res.send(result)
+})
+
+app.get('/users',async(req,res)=>{
+    const result=await usersCollections.find().toArray()
+    res.send(result)
 })
  
 
